@@ -5,6 +5,10 @@
 
 A Flutter notes application that stores notes locally on the device. This project demonstrates Flutter UI composition, local JSON persistence, note creation, editing, reading, deletion, timestamps, and themed note cards.
 
+## Try it online
+
+Open the [live web demo](https://abjahid525.github.io/note-pro/) to try the application without installing Flutter. Notes created in the demo are stored only in your current browser.
+
 ## Features
 
 - View locally stored notes in a two-column grid
@@ -27,12 +31,22 @@ A Flutter notes application that stores notes locally on the device. This projec
 
 The repository includes a standard Flutter application scaffold, a local notes repository under `lib/services/`, the note screens and widgets under `lib/`, dependency metadata, automated tests, and a live web demo. No Firebase project, account, or credentials are required.
 
-## Required next steps
+## Run locally
 
 1. Run `flutter pub get` to install dependencies.
 2. Run the app on an Android, iOS, desktop, or web target.
 3. Notes are saved locally on the device and are not synchronized between devices.
-4. Run `flutter analyze` and `flutter test` before publishing a release.
+
+## Quality checks
+
+Run the same checks used by GitHub Actions before opening a pull request:
+
+```powershell
+dart format --output=none --set-exit-if-changed lib test
+flutter analyze
+flutter test
+flutter build web --release
+```
 
 ## Build for the web
 
