@@ -36,6 +36,28 @@ void main() {
     expect(LocalNotesRepository.instance.getNotes(), isEmpty);
   });
 
+  testWidgets('confirming note deletion removes the note', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    await LocalNotesRepository.initialize();
+    final note = Note(
+      id: 'note-to-delete',
+      title: 'Delete this note',
+      content: 'Content',
+      creationDate: DateTime(2026, 1, 1),
+      colorId: 1,
+    );
+    await LocalNotesRepository.instance.saveNote(note);
+
+    await tester.pumpWidget(MaterialApp(home: NoteReaderScreen(note)));
+    await tester.tap(find.byIcon(Icons.delete));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Delete'));
+    await tester.pumpAndSettle();
+
+    expect(LocalNotesRepository.instance.getNotes(), isEmpty);
+    expect(find.text('Delete this note'), findsNothing);
+  });
+
   testWidgets('empty notes are not saved', (tester) async {
     SharedPreferences.setMockInitialValues({});
     await LocalNotesRepository.initialize();
