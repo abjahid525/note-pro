@@ -10,6 +10,31 @@ class NoteReaderScreen extends StatelessWidget {
 
   const NoteReaderScreen(this.note, {super.key});
 
+  Future<void> _confirmDelete(BuildContext context) async {
+    final shouldDelete = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete note?'),
+        content: const Text('This action cannot be undone.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (shouldDelete != true) return;
+    await LocalNotesRepository.instance.deleteNote(note.id);
+    if (!context.mounted) return;
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final backgroundColor = AppStyle.cardsColor[note.colorId];
@@ -34,11 +59,7 @@ class NoteReaderScreen extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.delete, color: Colors.black),
-            onPressed: () async {
-              await LocalNotesRepository.instance.deleteNote(note.id);
-              if (!context.mounted) return;
-              Navigator.pop(context);
-            },
+            onPressed: () => _confirmDelete(context),
           ),
         ],
       ),
