@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:notes_pro/main.dart';
 import 'package:notes_pro/models/note.dart';
+import 'package:notes_pro/screens/note_editor.dart';
 import 'package:notes_pro/screens/note_reader.dart';
 import 'package:notes_pro/services/local_notes_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,6 +33,18 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Keep this note'), findsOneWidget);
+    expect(LocalNotesRepository.instance.getNotes(), isEmpty);
+  });
+
+  testWidgets('empty notes are not saved', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    await LocalNotesRepository.initialize();
+
+    await tester.pumpWidget(const MaterialApp(home: NoteEditorScreen()));
+    await tester.tap(find.byIcon(Icons.save));
+    await tester.pump();
+
+    expect(find.text('Note is empty!'), findsOneWidget);
     expect(LocalNotesRepository.instance.getNotes(), isEmpty);
   });
 }
