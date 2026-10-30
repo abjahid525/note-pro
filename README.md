@@ -33,4 +33,12 @@ The repository includes a standard Flutter application scaffold, a local notes r
 3. Notes are saved locally on the device and are not synchronized between devices.
 4. Run `flutter analyze` and `flutter test` before publishing a release.
 
+## Build for the web
+
+```powershell
+flutter build web --release
+```
+
+The generated web app is written to `build/web`. Browser notes are stored in that browser's local storage and are not shared with the mobile or desktop versions.
+
 The current version intentionally prioritizes a simple offline-first experience. Cloud synchronization and authentication can be added later as a separate feature.
