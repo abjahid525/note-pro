@@ -22,15 +22,13 @@ A Flutter notes application connected to Firebase Cloud Firestore. This project 
 
 ## Current repository status
 
-This repository currently contains the Dart screen and widget source files. It does not yet include the complete Flutter application scaffold, such as `pubspec.yaml`, `lib/main.dart`, Firebase platform configuration files, or automated tests. These files are required before the application can be cloned and run by another developer.
+The repository now includes a standard Flutter application scaffold, the note screens and widgets under `lib/`, dependency metadata, and a basic Flutter test. Firebase platform configuration is still required before the app can connect to a real Firestore project.
 
 ## Required next steps
 
-1. Create a Flutter project scaffold with `flutter create .`.
-2. Move application source into the standard `lib/` structure.
-3. Add `pubspec.yaml` dependencies for `cloud_firestore`, `firebase_core`, `google_fonts`, and `intl`.
-4. Add a `main.dart` entry point and initialize Firebase.
-5. Configure Firebase for the target platforms using the Firebase CLI or FlutterFire CLI. Do not commit private credentials or local secrets.
-6. Add Firestore security rules and tests.
+1. Configure Firebase for the target platforms using the Firebase CLI or FlutterFire CLI. Do not commit private credentials or local secrets.
+2. Create the `notes` Firestore collection with the fields used by the app: `note_title`, `note_content`, `creation_date`, and `color_id`.
+3. Add Firestore security rules appropriate for the app's authentication model.
+4. Run `flutter analyze` and `flutter test` before publishing a release.
 
-Until these steps are completed, this repository should be treated as a source snapshot rather than a verified runnable release.
+The UI and Dart code are now structured for Flutter, but a real Firebase configuration is still needed for a fully connected release.

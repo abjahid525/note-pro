@@ -14,7 +14,7 @@ class NoteEditorScreen extends StatefulWidget {
 }
 
 class _NoteEditorScreenState extends State<NoteEditorScreen> {
-  late int color_id;
+  late int colorId;
   late Timestamp date;
 
   final TextEditingController _titleController = TextEditingController();
@@ -28,11 +28,11 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
       // 📝 Editing an existing note
       _titleController.text = widget.docToEdit!['note_title'];
       _mainController.text = widget.docToEdit!['note_content'];
-      color_id = widget.docToEdit!['color_id'];
+      colorId = widget.docToEdit!['color_id'];
       date = widget.docToEdit!['creation_date'];
     } else {
       // ➕ Creating new note
-      color_id = Random().nextInt(AppStyle.cardsColor.length);
+      colorId = Random().nextInt(AppStyle.cardsColor.length);
       date = Timestamp.now();
     }
   }
@@ -40,9 +40,9 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppStyle.cardsColor[color_id],
+      backgroundColor: AppStyle.cardsColor[colorId],
       appBar: AppBar(
-        backgroundColor: AppStyle.cardsColor[color_id],
+        backgroundColor: AppStyle.cardsColor[colorId],
         elevation: 0.0,
         iconTheme: const IconThemeData(color: Colors.black),
         title: Text(
@@ -106,7 +106,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                 "note_title": title,
                 "note_content": content,
                 "creation_date": Timestamp.now(),
-                "color_id": color_id,
+                "color_id": colorId,
               });
             } else {
               // ➕ Create new note
@@ -114,12 +114,14 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                 "note_title": title,
                 "note_content": content,
                 "creation_date": date,
-                "color_id": color_id,
+                "color_id": colorId,
               });
             }
 
+            if (!context.mounted) return;
             Navigator.pop(context);
           } catch (error) {
+            if (!context.mounted) return;
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text("Error saving note: $error")),
             );

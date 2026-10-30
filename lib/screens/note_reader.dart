@@ -15,12 +15,12 @@ class NoteReaderScreen extends StatefulWidget {
 class _NoteReaderScreenState extends State<NoteReaderScreen> {
   @override
   Widget build(BuildContext context) {
-    int color_id = widget.doc['color_id'];
+    final int colorId = widget.doc['color_id'];
 
     return Scaffold(
-      backgroundColor: AppStyle.cardsColor[color_id],
+      backgroundColor: AppStyle.cardsColor[colorId],
       appBar: AppBar(
-        backgroundColor: AppStyle.cardsColor[color_id],
+        backgroundColor: AppStyle.cardsColor[colorId],
         elevation: 0.0,
         actions: [
           // ✏️ EDIT BUTTON
@@ -35,6 +35,7 @@ class _NoteReaderScreenState extends State<NoteReaderScreen> {
                   ),
                 ),
               );
+              if (!context.mounted) return;
               Navigator.pop(context); // refresh after returning
             },
           ),
@@ -46,6 +47,7 @@ class _NoteReaderScreenState extends State<NoteReaderScreen> {
                   .collection("notes")
                   .doc(widget.doc.id)
                   .delete();
+              if (!context.mounted) return;
               Navigator.pop(context);
             },
           ),
