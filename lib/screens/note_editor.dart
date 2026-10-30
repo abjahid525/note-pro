@@ -90,9 +90,9 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
           final String content = _mainController.text.trim();
 
           if (title.isEmpty && content.isEmpty) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Note is empty!")),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(const SnackBar(content: Text("Note is empty!")));
             return;
           }
 
@@ -100,14 +100,16 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
             if (widget.docToEdit != null) {
               // 📝 Update note
               await FirebaseFirestore.instance
-                  .collection("notes") // 👈 make sure this matches your Firestore collection
+                  .collection(
+                    "notes",
+                  ) // 👈 make sure this matches your Firestore collection
                   .doc(widget.docToEdit!.id)
                   .update({
-                "note_title": title,
-                "note_content": content,
-                "creation_date": Timestamp.now(),
-                "color_id": colorId,
-              });
+                    "note_title": title,
+                    "note_content": content,
+                    "creation_date": Timestamp.now(),
+                    "color_id": colorId,
+                  });
             } else {
               // ➕ Create new note
               await FirebaseFirestore.instance.collection("notes").add({

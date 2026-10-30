@@ -61,8 +61,9 @@ class _NoteReaderScreenState extends State<NoteReaderScreen> {
             Text(widget.doc["note_title"], style: AppStyle.mainTitle),
             const SizedBox(height: 2.0),
             Text(
-              DateFormat('dd MMM yyyy, hh:mm a')
-                  .format((widget.doc["creation_date"] as Timestamp).toDate()),
+              DateFormat(
+                'dd MMM yyyy, hh:mm a',
+              ).format((widget.doc["creation_date"] as Timestamp).toDate()),
               style: AppStyle.dateTitle,
             ),
             const SizedBox(height: 30.0),

@@ -1,5 +1,7 @@
 # note-pro
 
+[![Flutter CI](https://github.com/abjahid525/note-pro/actions/workflows/flutter.yml/badge.svg)](https://github.com/abjahid525/note-pro/actions/workflows/flutter.yml)
+
 A Flutter notes application connected to Firebase Cloud Firestore. This project demonstrates Flutter UI composition, Firestore streams, note creation, editing, reading, deletion, timestamps, and themed note cards.
 
 ## Features
