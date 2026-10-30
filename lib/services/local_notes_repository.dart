@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalNotesRepository {
   static const _notesKey = 'notes';
-  static late final LocalNotesRepository instance;
+  static late LocalNotesRepository instance;
 
   final SharedPreferences _preferences;
 
