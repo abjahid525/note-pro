@@ -41,4 +41,6 @@ flutter build web --release
 
 The generated web app is written to `build/web`. Browser notes are stored in that browser's local storage and are not shared with the mobile or desktop versions.
 
+The GitHub Actions workflow also uploads the generated `build/web` directory as a downloadable `notes-pro-web-build` artifact for successful CI runs.
+
 The current version intentionally prioritizes a simple offline-first experience. Cloud synchronization and authentication can be added later as a separate feature.
