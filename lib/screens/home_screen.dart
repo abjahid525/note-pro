@@ -1,8 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:notes_pro/models/note.dart';
 import 'package:notes_pro/screens/note_editor.dart';
 import 'package:notes_pro/screens/note_reader.dart';
+import 'package:notes_pro/services/local_notes_repository.dart';
 import 'package:notes_pro/widgets/note_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,6 +14,38 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<Note> _notes = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadNotes();
+  }
+
+  void _loadNotes() {
+    setState(() {
+      _notes = LocalNotesRepository.instance.getNotes();
+    });
+  }
+
+  Future<void> _openEditor() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const NoteEditorScreen()),
+    );
+    if (!mounted) return;
+    _loadNotes();
+  }
+
+  Future<void> _openReader(Note note) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => NoteReaderScreen(note)),
+    );
+    if (!mounted) return;
+    _loadNotes();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         elevation: 2,
         title: Text(
-          "Notes Pro",
+          'Notes Pro',
           style: GoogleFonts.roboto(color: Colors.black),
         ),
         centerTitle: true,
@@ -29,66 +62,47 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Your recent notes",
+              'Your recent notes',
               style: GoogleFonts.roboto(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
               ),
             ),
-            SizedBox(height: 20.0),
-
+            const SizedBox(height: 20.0),
             Expanded(
-              child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection("notes")
-                    .snapshots(),
-                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  if (snapshot.hasData) {
-                    return GridView(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
+              child: _notes.isEmpty
+                  ? Center(
+                      child: Text(
+                        'No notes yet. Add your first note.',
+                        style: GoogleFonts.nunito(color: Colors.black54),
                       ),
-                      children: snapshot.data!.docs
-                          .map(
-                            (note) => noteCard(() {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => NoteReaderScreen(note),
-                                ),
-                              );
-                            }, note),
-                          )
-                          .toList(),
-                    );
-                  }
-                  return Text(
-                    "there's no Notes",
-                    style: GoogleFonts.nunito(color: Colors.white),
-                  );
-                },
-              ),
+                    )
+                  : GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                          ),
+                      itemCount: _notes.length,
+                      itemBuilder: (context, index) {
+                        final note = _notes[index];
+                        return NoteCard(
+                          note: note,
+                          onTap: () => _openReader(note),
+                        );
+                      },
+                    ),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => NoteEditorScreen()),
-          );
-        },
-        label: Text("Add Note"),
-        icon: Icon(Icons.add),
+        onPressed: _openEditor,
+        label: const Text('Add Note'),
+        icon: const Icon(Icons.add),
         backgroundColor: Colors.cyan.shade50,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       ),

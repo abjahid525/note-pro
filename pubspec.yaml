@@ -1,5 +1,5 @@
 name: notes_pro
-description: "A Flutter notes application backed by Firebase Cloud Firestore."
+description: "A Flutter notes application with local device storage."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -30,11 +30,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cloud_firestore: ^6.0.2
   cupertino_icons: ^1.0.8
-  firebase_core: ^4.1.1
   google_fonts: ^6.3.2
   intl: ^0.20.2
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_test:

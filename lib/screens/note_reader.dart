@@ -1,52 +1,41 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:notes_pro/style/app_style.dart';
+import 'package:notes_pro/models/note.dart';
 import 'package:notes_pro/screens/note_editor.dart';
+import 'package:notes_pro/services/local_notes_repository.dart';
+import 'package:notes_pro/style/app_style.dart';
 
-class NoteReaderScreen extends StatefulWidget {
-  final QueryDocumentSnapshot doc;
-  const NoteReaderScreen(this.doc, {super.key});
+class NoteReaderScreen extends StatelessWidget {
+  final Note note;
 
-  @override
-  State<NoteReaderScreen> createState() => _NoteReaderScreenState();
-}
+  const NoteReaderScreen(this.note, {super.key});
 
-class _NoteReaderScreenState extends State<NoteReaderScreen> {
   @override
   Widget build(BuildContext context) {
-    final int colorId = widget.doc['color_id'];
-
+    final backgroundColor = AppStyle.cardsColor[note.colorId];
     return Scaffold(
-      backgroundColor: AppStyle.cardsColor[colorId],
+      backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: AppStyle.cardsColor[colorId],
+        backgroundColor: backgroundColor,
         elevation: 0.0,
         actions: [
-          // ✏️ EDIT BUTTON
           IconButton(
             icon: const Icon(Icons.edit, color: Colors.black),
             onPressed: () async {
               await Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => NoteEditorScreen(
-                    docToEdit: widget.doc, // pass the current note
-                  ),
+                  builder: (context) => NoteEditorScreen(noteToEdit: note),
                 ),
               );
               if (!context.mounted) return;
-              Navigator.pop(context); // refresh after returning
+              Navigator.pop(context);
             },
           ),
-          // 🗑️ DELETE BUTTON
           IconButton(
             icon: const Icon(Icons.delete, color: Colors.black),
             onPressed: () async {
-              await FirebaseFirestore.instance
-                  .collection("notes")
-                  .doc(widget.doc.id)
-                  .delete();
+              await LocalNotesRepository.instance.deleteNote(note.id);
               if (!context.mounted) return;
               Navigator.pop(context);
             },
@@ -58,16 +47,14 @@ class _NoteReaderScreenState extends State<NoteReaderScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.doc["note_title"], style: AppStyle.mainTitle),
+            Text(note.title, style: AppStyle.mainTitle),
             const SizedBox(height: 2.0),
             Text(
-              DateFormat(
-                'dd MMM yyyy, hh:mm a',
-              ).format((widget.doc["creation_date"] as Timestamp).toDate()),
+              DateFormat('dd MMM yyyy, hh:mm a').format(note.creationDate),
               style: AppStyle.dateTitle,
             ),
             const SizedBox(height: 30.0),
-            Text(widget.doc["note_content"], style: AppStyle.mainContent),
+            Text(note.content, style: AppStyle.mainContent),
           ],
         ),
       ),

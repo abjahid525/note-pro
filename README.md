@@ -2,11 +2,11 @@
 
 [![Flutter CI](https://github.com/abjahid525/note-pro/actions/workflows/flutter.yml/badge.svg)](https://github.com/abjahid525/note-pro/actions/workflows/flutter.yml)
 
-A Flutter notes application connected to Firebase Cloud Firestore. This project demonstrates Flutter UI composition, Firestore streams, note creation, editing, reading, deletion, timestamps, and themed note cards.
+A Flutter notes application that stores notes locally on the device. This project demonstrates Flutter UI composition, local JSON persistence, note creation, editing, reading, deletion, timestamps, and themed note cards.
 
 ## Features
 
-- View notes from a Firestore collection in a two-column grid
+- View locally stored notes in a two-column grid
 - Create notes with a title and body
 - Open and read a note
 - Edit an existing note
@@ -17,23 +17,20 @@ A Flutter notes application connected to Firebase Cloud Firestore. This project 
 ## Technology
 
 - Flutter and Dart
-- Firebase Cloud Firestore
+- Shared Preferences for local persistence
 - Material Design
 - Google Fonts
 - intl for date formatting
 
 ## Current repository status
 
-The repository now includes a standard Flutter application scaffold, the note screens and widgets under `lib/`, dependency metadata, and a basic Flutter test. Firebase platform configuration is still required before the app can connect to a real Firestore project.
-
-The repository includes a deny-by-default [Firestore rules file](./firestore.rules). Because this version does not use authentication, it intentionally does not permit a deployed Firebase database to be read or changed. This avoids exposing every user's notes through public rules.
+The repository includes a standard Flutter application scaffold, a local notes repository under `lib/services/`, the note screens and widgets under `lib/`, dependency metadata, and a basic Flutter test. No Firebase project, account, or credentials are required.
 
 ## Required next steps
 
-1. Configure Firebase for the target platforms using the Firebase CLI or FlutterFire CLI. Do not commit private credentials or local secrets.
-2. Create the `notes` Firestore collection with the fields used by the app: `note_title`, `note_content`, `creation_date`, and `color_id`.
-3. Use the Firebase Local Emulator Suite for unauthenticated local development, or add Firebase Authentication before deploying.
-4. Replace the deny-by-default rules with per-user rules only after adding authentication and an ownership field such as `owner_id`.
-5. Run `flutter analyze` and `flutter test` before publishing a release.
+1. Run `flutter pub get` to install dependencies.
+2. Run the app on an Android, iOS, desktop, or web target.
+3. Notes are saved locally on the device and are not synchronized between devices.
+4. Run `flutter analyze` and `flutter test` before publishing a release.
 
-The UI and Dart code are now structured for Flutter, but a real Firebase configuration is still needed for a fully connected release.
+The current version intentionally prioritizes a simple offline-first experience. Cloud synchronization and authentication can be added later as a separate feature.
