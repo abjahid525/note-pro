@@ -1,0 +1,11 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Keep the deployed database closed until the app has an authentication
+    // model and per-user ownership fields.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
