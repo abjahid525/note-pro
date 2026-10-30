@@ -53,10 +53,7 @@ void main() {
     await LocalNotesRepository.initialize();
 
     await tester.pumpWidget(const MaterialApp(home: NoteEditorScreen()));
-    await tester.enterText(
-      find.byType(TextField).at(0),
-      'Portfolio plan',
-    );
+    await tester.enterText(find.byType(TextField).at(0), 'Portfolio plan');
     await tester.enterText(
       find.byType(TextField).at(1),
       'Add projects and tests to GitHub.',
