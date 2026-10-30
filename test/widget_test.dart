@@ -66,4 +66,33 @@ void main() {
     expect(notes.single.title, 'Portfolio plan');
     expect(notes.single.content, 'Add projects and tests to GitHub.');
   });
+
+  testWidgets('editing a note updates the existing local record', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    await LocalNotesRepository.initialize();
+    final originalNote = Note(
+      id: 'note-1',
+      title: 'Original title',
+      content: 'Original content',
+      creationDate: DateTime(2026, 1, 1),
+      colorId: 1,
+    );
+    await LocalNotesRepository.instance.saveNote(originalNote);
+
+    await tester.pumpWidget(
+      MaterialApp(home: NoteEditorScreen(noteToEdit: originalNote)),
+    );
+    await tester.enterText(find.byType(TextField).at(0), 'Updated title');
+    await tester.enterText(find.byType(TextField).at(1), 'Updated content');
+    await tester.tap(find.byIcon(Icons.save));
+    await tester.pumpAndSettle();
+
+    final notes = LocalNotesRepository.instance.getNotes();
+    expect(notes, hasLength(1));
+    expect(notes.single.id, 'note-1');
+    expect(notes.single.title, 'Updated title');
+    expect(notes.single.content, 'Updated content');
+  });
 }
