@@ -74,4 +74,25 @@ void main() {
 
     expect(LocalNotesRepository.instance.getNotes(), isEmpty);
   });
+
+  test('keeps notes available after repository reinitialization', () async {
+    final note = Note(
+      id: 'persistent-note',
+      title: 'Saved locally',
+      content: 'Available after reopening the repository',
+      creationDate: DateTime(2026, 3, 1),
+      colorId: 2,
+    );
+
+    await LocalNotesRepository.instance.saveNote(note);
+    await LocalNotesRepository.initialize();
+
+    final restoredNotes = LocalNotesRepository.instance.getNotes();
+    expect(restoredNotes, hasLength(1));
+    expect(restoredNotes.single.id, note.id);
+    expect(restoredNotes.single.title, note.title);
+    expect(restoredNotes.single.content, note.content);
+    expect(restoredNotes.single.creationDate, note.creationDate);
+    expect(restoredNotes.single.colorId, note.colorId);
+  });
 }
