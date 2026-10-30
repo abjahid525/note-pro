@@ -1,6 +1,7 @@
 # note-pro
 
 [![Flutter CI](https://github.com/abjahid525/note-pro/actions/workflows/flutter.yml/badge.svg)](https://github.com/abjahid525/note-pro/actions/workflows/flutter.yml)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Notes%20Pro-00acc1?logo=googlechrome&logoColor=white)](https://abjahid525.github.io/note-pro/)
 
 A Flutter notes application that stores notes locally on the device. This project demonstrates Flutter UI composition, local JSON persistence, note creation, editing, reading, deletion, timestamps, and themed note cards.
 
@@ -24,7 +25,7 @@ A Flutter notes application that stores notes locally on the device. This projec
 
 ## Current repository status
 
-The repository includes a standard Flutter application scaffold, a local notes repository under `lib/services/`, the note screens and widgets under `lib/`, dependency metadata, and a basic Flutter test. No Firebase project, account, or credentials are required.
+The repository includes a standard Flutter application scaffold, a local notes repository under `lib/services/`, the note screens and widgets under `lib/`, dependency metadata, automated tests, and a live web demo. No Firebase project, account, or credentials are required.
 
 ## Required next steps
 
