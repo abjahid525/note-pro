@@ -28,10 +28,10 @@ void main() {
     await LocalNotesRepository.instance.saveNote(olderNote);
     await LocalNotesRepository.instance.saveNote(newerNote);
 
-    expect(
-      LocalNotesRepository.instance.getNotes().map((note) => note.id),
-      ['newer', 'older'],
-    );
+    expect(LocalNotesRepository.instance.getNotes().map((note) => note.id), [
+      'newer',
+      'older',
+    ]);
   });
 
   test('updates an existing note instead of duplicating it', () async {
