@@ -43,4 +43,12 @@ The generated web app is written to `build/web`. Browser notes are stored in tha
 
 The GitHub Actions workflow also uploads the generated `build/web` directory as a downloadable `notes-pro-web-build` artifact for successful CI runs.
 
+## Optional GitHub Pages deployment
+
+The repository includes a manual [GitHub Pages workflow](./.github/workflows/deploy-pages.yml). To publish the web app, enable **GitHub Pages** with **GitHub Actions** as the source in the repository settings, then run **Deploy note-pro web app** from the Actions tab. The published URL will be:
+
+```text
+https://abjahid525.github.io/note-pro/
+```
+
 The current version intentionally prioritizes a simple offline-first experience. Cloud synchronization and authentication can be added later as a separate feature.
