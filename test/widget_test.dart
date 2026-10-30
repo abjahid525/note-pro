@@ -47,4 +47,26 @@ void main() {
     expect(find.text('Note is empty!'), findsOneWidget);
     expect(LocalNotesRepository.instance.getNotes(), isEmpty);
   });
+
+  testWidgets('saving a note stores its title and content', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    await LocalNotesRepository.initialize();
+
+    await tester.pumpWidget(const MaterialApp(home: NoteEditorScreen()));
+    await tester.enterText(
+      find.byType(TextField).at(0),
+      'Portfolio plan',
+    );
+    await tester.enterText(
+      find.byType(TextField).at(1),
+      'Add projects and tests to GitHub.',
+    );
+    await tester.tap(find.byIcon(Icons.save));
+    await tester.pumpAndSettle();
+
+    final notes = LocalNotesRepository.instance.getNotes();
+    expect(notes, hasLength(1));
+    expect(notes.single.title, 'Portfolio plan');
+    expect(notes.single.content, 'Add projects and tests to GitHub.');
+  });
 }
